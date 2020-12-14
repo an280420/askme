@@ -4,53 +4,28 @@ class User < ApplicationRecord
   # параметры работы модуля шифрования
   ITERATIONS = 20000
   DIGEST = OpenSSL::Digest::SHA256.new
+  FORMAT_EMAIL = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  FORMAT_USERNAME = /\A\w+\z/
+
+  attr_accessor :password
 
   has_many :questions
 
   validates :email, :username, presence: true
   validates :email, :username, uniqueness: true
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
+  validates :email, format: { with: FORMAT_EMAIL }
   validates :username, length: { maximum: 40 }
-  validates :username, format: { with: /\A([\w\d]+)\z/, on: :create }
+  validates :username, format: { with: FORMAT_USERNAME }
+  validates :password, presence: true, on: :create
+  validates :password, confirmation: true
 
-  attr_accessor :password
-
-  validates_presence_of :password, on: :create
-  validates_confirmation_of :password
-
-  before_validation :downcase_username
+  before_validation :downcase_username, :downcase_email
   before_save :encrypt_password
 
-  def downcase_username
-    self.username = username.downcase
-  end
-
-  def encrypt_password
-    if password.present?
-
-      #  создаем т.н. 'соль' - рандомная строка усложняющая задачу хакерам
-      self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
-
-      # Создаем хэш пароля — длинная уникальная строка, из которой невозможно
-      # восстановить исходный пароль. Однако, если правильный пароль у нас есть,
-      # мы легко можем получить такую же строку и сравнить её с той, что в базе.
-      self.password_hash = User.hash_to_string(
-        OpenSSL::PKCS5.pbkdf2_hmac(
-          password, password_salt, ITERATIONS, DIGEST.length, DIGEST
-        )
-      )
-    end
-  end
-
-  # Служебный метод, преобразующий бинарную строку в шестнадцатиричный формат,
-  # для удобства хранения.
   def self.hash_to_string(password_hash)
     password_hash.unpack('H*')[0]
   end
 
-  # Основной метод для аутентификации юзера (логина). Проверяет email и пароль,
-  # если пользователь с такой комбинацией есть в базе, возвращает этого
-  # пользователя. Если нет — возвращает nil.
   def self.authenticate(email, password)
     # Сперва находим кандидата по email
     user = find_by(email: email)
@@ -65,12 +40,34 @@ class User < ApplicationRecord
       )
     )
 
-    # Обратите внимание: сравнивается password_hash, а оригинальный пароль так
-    # никогда и не сохраняется нигде. Если пароли совпали, возвращаем
-    # пользователя.
     return user if user.password_hash == hashed_password
 
-    # Иначе, возвращаем nil
     nil
+  end
+
+  def downcase_username
+    if username.present?
+      username.downcase!
+    end
+  end
+
+  def downcase_email
+    if email.present?
+      email.downcase!
+    end
+  end
+
+  private
+
+  def encrypt_password
+    if password.present?
+      self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
+
+      self.password_hash = User.hash_to_string(
+        OpenSSL::PKCS5.pbkdf2_hmac(
+          password, password_salt, ITERATIONS, DIGEST.length, DIGEST
+        )
+      )
+    end
   end
 end
