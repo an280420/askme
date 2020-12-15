@@ -39,12 +39,12 @@ class User < ApplicationRecord
     nil
   end
 
+  private
+
   def downcase_username_and_email
-      username&.downcase!
+    username&.downcase!
       email&.downcase!
   end
-
-  private
 
   def encrypt_password
     if password.present?
