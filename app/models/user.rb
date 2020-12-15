@@ -10,11 +10,9 @@ class User < ApplicationRecord
 
   has_many :questions
 
-  validates :email, :username, presence: true
-  validates :email, :username, uniqueness: true
+  validates :email, :username, presence: true, uniqueness: true
   validates :email, format: { with: FORMAT_EMAIL }
-  validates :username, length: { maximum: 40 }
-  validates :username, format: { with: FORMAT_USERNAME }
+  validates :username, length: { maximum: 40 }, format: { with: FORMAT_USERNAME }
   validates :password, presence: true, on: :create
   validates :password, confirmation: true
 
@@ -42,15 +40,11 @@ class User < ApplicationRecord
   end
 
   def downcase_username
-    if username.present?
-      username.downcase!
-    end
+      username&.downcase!
   end
 
   def downcase_email
-    if email.present?
-      email.downcase!
-    end
+      email&.downcase!
   end
 
   private
