@@ -1,7 +1,6 @@
 require 'openssl'
 
 class User < ApplicationRecord
-  # параметры работы модуля шифрования
   ITERATIONS = 20000
   DIGEST = OpenSSL::Digest::SHA256.new
   FORMAT_EMAIL = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
