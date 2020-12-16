@@ -15,6 +15,7 @@
  *= require grid
  *= require button
  *= require form
- 
+ *= require layout
+
  *= require_self
  */
