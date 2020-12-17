@@ -44,7 +44,7 @@ class User < ApplicationRecord
 
   def downcase_username_and_email
     username&.downcase!
-      email&.downcase!
+    email&.downcase!
   end
 
   def encrypt_password
