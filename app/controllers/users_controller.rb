@@ -12,15 +12,20 @@ class UsersController < ApplicationController
 
     if @user.save
       redirect_to root_url, notice: "Пользователь успешно зарегистрирован"
+    else
+      render 'new'
     end
   end
 
   def edit
+    @user = User.find params[:id]
   end
 
   def show
-    @user = User.last
-    @questions = Question.last
+    @user = User.find params[:id]
+    @questions = @user.questions.order(created_at: :desc)
+
+    @new_question = @user.questions.build
   end
 
   private
