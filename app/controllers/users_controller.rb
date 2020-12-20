@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def index
-    @user = User.all
+    @users = User.all
   end
 
   def new
@@ -10,13 +10,17 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    @user.save
+    if @user.save
+      redirect_to root_url, notice: "Пользователь успешно зарегистрирован"
+    end
   end
 
   def edit
   end
 
   def show
+    @user = User.last
+    @questions = Question.last
   end
 
   private
