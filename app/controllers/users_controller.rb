@@ -1,12 +1,13 @@
 class UsersController < ApplicationController
-
-  before_action :load_user, except: [:index, :new, :create]
+  before_action :load_user, except: [:index, :create, :new]
 
   def index
     @users = User.all
   end
 
   def new
+    redirect_to root_url, alert: 'Вы уже залогинены' if current_user.present?
+
     @user = User.new
   end
 
@@ -25,15 +26,13 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to user_path(@user), notice: "Данные обновленны"
+      redirect_to user_path(@user), notice: "Данные обновлены"
     else
       render 'edit'
     end
   end
 
   def show
-    @user = User.find params[:id]
-
     @questions = @user.questions.order(created_at: :desc)
 
     @new_question = @user.questions.build
