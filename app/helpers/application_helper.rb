@@ -7,6 +7,10 @@ module ApplicationHelper
     end
   end
 
+  def fa_icon(icon_class)
+    content_tag 'span', '', class: "fa fa-#{icon_class}"
+  end
+
   def incline(number, one, few, many)
     remainder10 = number % 10
     remainder100 = number % 100
