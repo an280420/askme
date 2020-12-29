@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
-  before_action :authorize_user, except: [:create]
   before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_user, except: [:create]
 
   # GET /questions/1/edit
   def edit
