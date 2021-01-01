@@ -5,6 +5,7 @@ class User < ApplicationRecord
   DIGEST = OpenSSL::Digest::SHA256.new
   FORMAT_EMAIL = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   FORMAT_USERNAME = /\A\w+\z/
+  FORMAT_COLOR = /\A\h{3}{1,2}\z/
 
   attr_accessor :password
 
@@ -15,7 +16,7 @@ class User < ApplicationRecord
   validates :username, length: { maximum: 40 }, format: { with: FORMAT_USERNAME }
   validates :password, presence: true, on: :create
   validates :password, confirmation: true
-  validates :profile_color, format: { with: /\A#([a-f\d]{3}){1,2}\z/ }
+  validates :profile_color, format: { with: FORMAT_COLOR }
 
   before_validation :downcase_username_and_email
   before_save :encrypt_password
