@@ -1,0 +1,12 @@
+ru:
+  activerecord:
+    attributes:
+      user:
+        email: Логин (email)
+        username: Никнейм
+        name: Имя
+        avatar_url: URL вашей аватарки
+        profile_color: Цвет фона профиля
+        password: Пароль
+        password_confirmation: Подтверждение пароля
+
