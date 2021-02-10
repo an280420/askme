@@ -65,6 +65,7 @@ GEM
     crass (1.0.6)
     erubi (1.10.0)
     execjs (2.7.0)
+    ffaker (2.17.0)
     ffi (1.14.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -167,6 +168,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
+  ffaker
   listen (~> 3.2)
   pg
   puma (~> 4.1)
@@ -181,4 +183,4 @@ RUBY VERSION
    ruby 2.7.2p137
 
 BUNDLED WITH
-   2.2.3
+   2.2.7
