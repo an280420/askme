@@ -2,18 +2,6 @@
   <div class="question-content">
     <div class="question-text text-lead">
       <%= text_with_hashtag_link(question.text) %>
-      <%= question.text %>
-    </div>
-
-    <% if question.answer.present? %>
-      <div class="question-answer text-lead">
-        <%= question.answer %>
-        <%= text_with_hashtag_link(question.answer) %>
-      </div>
-    <% end %>
-
-    <div class="question-date">
-      <%= l(question.created_at, format: :long) %>
     </div>
 
     <% if question.author.present? %>
@@ -21,6 +9,17 @@
         Вопрос задал: <%= link_to "@#{question.author.username}", user_path(question.author_id) %>
       </div>
     <% end %>
+
+    <% if question.answer.present? %>
+      <div class="question-answer text-lead">
+        <%= text_with_hashtag_link(question.answer) %>
+      </div>
+    <% end %>
+
+    <div class="question-date">
+      <%= l(question.created_at, format: :short) %>
+    </div>
+
   </div>
 
   <% if question.user == current_user %>
