@@ -9,6 +9,7 @@ gem 'rails_12factor'
 gem 'puma', '~> 4.1'
 gem 'webpacker', '~> 4.0'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'dotenv-rails'
 gem "recaptcha"
 gem 'uglifier'
 
