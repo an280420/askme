@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+  # контроллер сессий.
+  # аутентификация без гема devise
+  
   def new
   end
 
